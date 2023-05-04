@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class Customer {
@@ -14,6 +15,7 @@ public class Customer {
         this.phone = phone;
         this.address = address;
         this.ID = ID;
+        this.rentals = new ArrayList<>();
     }
 
 //-----------------------------------------------------getters and setters

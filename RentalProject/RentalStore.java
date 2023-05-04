@@ -7,8 +7,12 @@ public class RentalStore {
     private List<Movie> movies;
     private List<Customer> customers;
 
+    public RentalStore() {
+        this.movies = new ArrayList<>();
+        this.customers = new ArrayList<>();
+    }
 
-//---------------------------------------------------
+    //---------------------------------------------------
     public void register(Customer customer){
         customers.add(customer);
     }
@@ -20,9 +24,14 @@ public class RentalStore {
     public void removeMovie(Movie movie) {
         for (Movie m:movies) {
             if (m.getID() == movie.getID()){
-                if (movie.isAvailable() == true){
-                    movies.remove(m);
+                for (Customer i:customers) {
+                    for (int j = 0; j < i.getRentals().size(); j++) {
+                        if (i.getRentals().get(j).getMovie().equals(movie)){
+                            i.getRentals().remove(j);
+                        }
+                    }
                 }
+                movies.remove(m);
             }
         }
     }
