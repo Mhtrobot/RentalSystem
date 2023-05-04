@@ -1,17 +1,17 @@
 import java.util.Date;
 
-public class Rental {
+public class Rental{
     private int ID;
-    private Movie movie;
     private Customer customer;
     private Date rentalDate;
     private Date returnDate;
+    private Item item;
 
-    public Rental(int ID, Movie movie, Customer customer) {
+    public Rental(int ID, Item item, Customer customer) {
         this.ID = ID;
-        this.movie = movie;
+        this.item = item;
         this.customer = customer;
-        movie.setAvailable(false);
+        item.setAvailable(false);
         this.rentalDate = new Date();
     }
 
@@ -21,8 +21,8 @@ public class Rental {
         return ID;
     }
 
-    public Movie getMovie() {
-        return movie;
+    public Item getItem() {
+        return item;
     }
 
     public Customer getCustomer() {

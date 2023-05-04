@@ -1,14 +1,13 @@
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class RentalStore {
-    private List<Movie> movies;
+    private List<Item> items;
     private List<Customer> customers;
 
     public RentalStore() {
-        this.movies = new ArrayList<>();
+        this.items = new ArrayList<>();
         this.customers = new ArrayList<>();
     }
 
@@ -17,56 +16,45 @@ public class RentalStore {
         customers.add(customer);
     }
 
-    public void AddMovie(Movie movie) {
-        movies.add(movie);
+    public void AddItem(Movie movie) {
+        items.add(movie);
     }
 
-    public void removeMovie(Movie movie) {
-        for (Movie m:movies) {
-            if (m.getID() == movie.getID()){
-                for (Customer i:customers) {
-                    for (int j = 0; j < i.getRentals().size(); j++) {
-                        if (i.getRentals().get(j).getMovie().equals(movie)){
-                            i.getRentals().remove(j);
-                        }
-                    }
+    public void removeMovie(Item item) {
+        for (Item m:items) {
+            if (m.getId() == item.getId()){
+                if (item.isAvailable() == true){
+                    items.remove(m);
                 }
-                movies.remove(m);
             }
         }
     }
 
-    public List<Movie> getAvailableMovies(){
-        List<Movie> avamovies = new ArrayList<>();
-        for (int i=0; i< movies.size(); i++) {
-            if (movies.get(i).isAvailable() == true)
-                avamovies.add(movies.get(i));
+//------------------------------------------------------------------------------
+    public List<Item> getAvailableItems(){
+        List<Item> avaItems = new ArrayList<>();
+        for (int i=0; i< items.size(); i++) {
+            if (items.get(i).isAvailable() == true)
+                avaItems.add(items.get(i));
         }
-        return avamovies;
+        return avaItems;
     }
 
-    public void rentMovie(Movie movie, Customer customer){
-        if (movie.isAvailable() == true){
-            String id1 = Integer.toString(movie.getID());
-            String id2 = Integer.toString(customer.getID());
-            String id0 = id1.concat(id2);
-            int id = Integer.parseInt(id0);
-            Rental rental = new Rental(id, movie, customer);
-            customer.getRentals().add(rental);
+    public List<Customer> getCustomers(){
+        List<Customer> availableCustomers = new ArrayList<>();
+        for (int i=0; i< this.customers.size(); i++) {
+            availableCustomers.add(customers.get(i));
         }
+        return customers;
     }
 
-    public void returnMovie(Rental rental){
-        int count=0;
-        for (Customer c:customers) {
-            if (c.getRentals().get(count).getID() == rental.getID()){
-                Date date = new Date();
-                rental.setReturnDate(date);
-                rental.getMovie().setAvailable(true);
-                c.getRentals().remove(count);
+    public Item getItemById(int id){
+        for (Item m:items) {
+            if (m.getId() == id){
+                return m;
             }
-            count++;
         }
+        return null;
     }
 
     public Customer getCustomersById(int id) {
@@ -78,12 +66,17 @@ public class RentalStore {
         return null;
     }
 
-    public Movie getMovieById(int id){
-        for (Movie m:movies) {
-            if (m.getID() == id){
-                return m;
+    public void removeItem(Item item){
+        for (Item i:items) {
+            if (i.getId() == item.getId()){
+                for (Customer c:customers) {
+                    for (int j = 0; j < c.getRentals().size(); j++) {
+                        if (c.getRentals().get(j).getItem().getId() == item.getId())
+                            c.getRentals().remove(j);
+                    }
+                }
+                items.remove(i);
             }
         }
-        return null;
     }
 }
