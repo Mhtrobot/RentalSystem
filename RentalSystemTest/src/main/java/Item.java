@@ -9,15 +9,17 @@ public class Item {
     protected Date releaseDate;
     protected int id;
     protected boolean Available;
-    protected RentalStore rentalStore;
+    protected RentalStore rentalStore = new RentalStore();
 
-    public Item(String title, String genre, Date releaseDate, int id, RentalStore rentalStore) {
+    public Item() {
+    }
+
+    public Item(String title, String genre, Date releaseDate, int id) {
         this.title = title;
         this.genre = genre;
         this.releaseDate = releaseDate;
         this.id = id;
         this.Available = true;
-        this.rentalStore= rentalStore;
     }
 
 //-------------------------------------------------------getters and setter
@@ -52,11 +54,9 @@ public class Item {
 
 //-------------------------------------------------------methods
     public void rentItem(Item item, Customer customer){
-        if(item.Available == true){
-            int id = Integer.parseInt(Integer.toString(item.getId()).concat(Integer.toString(customer.getID())));
-            Rental rental = new Rental(id, item, customer);
-            customer.getRentals().add(rental);
-        }
+        int id = Integer.parseInt(Integer.toString(item.getId()).concat(Integer.toString(customer.getID())));
+        Rental rental = new Rental(id, item, customer);
+        customer.getRentals().add(rental);
     }
 
     public void returnItem(Rental rental){
